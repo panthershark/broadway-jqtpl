@@ -5,7 +5,7 @@ var _ = require('lodash'),
 
 var Jqtpl = function() { };
 
-util.inherits(Pipeline, events.EventEmitter);
+util.inherits(Jqtpl, events.EventEmitter);
 
 Jqtpl.prototype.attach = function (options) {
 	var config = options.config,
