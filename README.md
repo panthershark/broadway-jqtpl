@@ -1,4 +1,4 @@
 broadway-jqtpl
 ==============
 
-jqtpl plugin for flatiron broadway
+Plugin for flatiron/broadway for rendering with the jqtpl express view engine.

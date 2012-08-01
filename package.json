@@ -1,0 +1,44 @@
+{
+  "name": "broadway-jqtpl",
+   "version": "0.1.0",
+   "main": "index",
+   "description": "Plugin for flatiron/broadway for rendering with the jqtpl express view engine.",
+   "keywords": [
+       "node",
+       "flatiron",
+       "broadway",
+       "jqtpl",
+       "html",
+       "render"
+   ],
+   "author": {
+       "name": "Tommy Messbauer",
+       "email": "tom.messbauer@gmail.com",
+       "web": "https://twitter.com/tommydudebreaux",
+       "twitter": "tommydudebreaux"
+   }, 
+   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tommydudebreaux/broadway-jqtpl.git"
+  },
+  "directories": {
+    "tests": "tests"
+  },
+  "engines": {
+    "node": ">=0.6.0"
+  },
+  "scripts": {
+    "test": "node /tests/example.js"
+  },
+  "dependencies": {
+    "lodash": "*",
+    "jqtpl": "*"
+    },
+  "devDependencies": {
+    "optimist": "*"
+    },
+  "optionalDependencies": {},
+  "homepage": "http://vastdevblog.vast.com/"
+}
+
