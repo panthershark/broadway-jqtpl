@@ -1,6 +1,7 @@
 var _ = require('lodash'),
 	jqtpl = require('jqtpl'),
 	util = require('util'),
+	events = require('events'),
 	tmpl = jqtpl.express;
 
 var Jqtpl = function() { };
