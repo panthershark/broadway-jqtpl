@@ -1,12 +1,15 @@
 var _ = require('lodash'),
 	jqtpl = require('jqtpl'),
-	logger = require('lib/CaptainsLog'),
+	util = require('util'),
 	tmpl = jqtpl.express;
 
 var Jqtpl = function() { };
 
+util.inherits(Pipeline, events.EventEmitter);
+
 Jqtpl.prototype.attach = function (options) {
-	var config = options.config;
+	var config = options.config,
+		that = this;
 	
 	this.render = function (res, viewName, model, headers) {
 		var html = '',
@@ -32,7 +35,7 @@ Jqtpl.prototype.attach = function (options) {
 	    	html = renderHtml(viewName, data, expressExtensions, config);
 	    } 
 	    catch (e) {
-	    	logger.debug(e.stack);
+	    	that.emit('error', e);
 		    // write the error response
 			res.writeHead(200, _.extend({ 'Content-Type': 'text/plain' }, headers) );
 	        res.write(e.stack);
@@ -49,7 +52,7 @@ Jqtpl.prototype.attach = function (options) {
 	    }
 	    catch (e) {
 	    	layouthtml = "Error in layout template: " + e.stack + '<p>' + html + '</p>';
-	        logger.debug(e.stack);
+	    	that.emit('error', e);
 	    }
 
 		// write the response
@@ -77,7 +80,7 @@ var renderHtml = function(viewName, data, expressExtensions, config){
 
 	if (!view.path) {
 		var html = 'jqtpl plugin: Cannot find view - ' + viewName;
-		logger.error(html);
+		that.emit('error', new Error(html));
 	}
 	else {
 
@@ -98,6 +101,7 @@ var renderHtml = function(viewName, data, expressExtensions, config){
 		}
 		catch (e) {
 			e.message = 'ERROR in template: ' + viewName + ' (' + view.path + ').  ';
+			that.emit('error', e);
 		}
 
 	}
