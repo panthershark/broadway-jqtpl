@@ -9,8 +9,7 @@ var Jqtpl = function() { };
 util.inherits(Jqtpl, events.EventEmitter);
 
 Jqtpl.prototype.attach = function (options) {
-	var config = options.config,
-		that = this;
+	var config = options.config;
 	
 	this.render = function (res, viewName, model, headers) {
 		var html = '',
@@ -36,12 +35,7 @@ Jqtpl.prototype.attach = function (options) {
 	    	html = renderHtml(viewName, data, expressExtensions, config);
 	    } 
 	    catch (e) {
-	    	that.emit('error', e);
-		    // write the error response
-			res.writeHead(200, _.extend({ 'Content-Type': 'text/plain' }, headers) );
-	        res.write(e.stack);
-	        res.end();
-	        return;
+	    	throw e;
 	    }
 
 	    try {
@@ -53,7 +47,7 @@ Jqtpl.prototype.attach = function (options) {
 	    }
 	    catch (e) {
 	    	layouthtml = "Error in layout template: " + e.stack + '<p>' + html + '</p>';
-	    	that.emit('error', e);
+	    	throw e;
 	    }
 
 		// write the response
@@ -81,7 +75,7 @@ var renderHtml = function(viewName, data, expressExtensions, config){
 
 	if (!view.path) {
 		var html = 'jqtpl plugin: Cannot find view - ' + viewName;
-		that.emit('error', new Error(html));
+		throw new Error(html);
 	}
 	else {
 
@@ -101,8 +95,8 @@ var renderHtml = function(viewName, data, expressExtensions, config){
 			html = jqtpl.tmpl(view.path, data);  // render
 		}
 		catch (e) {
-			e.message = 'ERROR in template: ' + viewName + ' (' + view.path + ').  ';
-			that.emit('error', e);
+			e.message = 'ERROR in template: ' + viewName + ' (' + view.path + ').  ' + e.message;
+			throw e;
 		}
 
 	}
