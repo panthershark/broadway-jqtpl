@@ -1,6 +1,6 @@
 {
   "name": "broadway-jqtpl",
-   "version": "0.1.0",
+   "version": "0.2.0",
    "main": "index",
    "description": "Plugin for flatiron/broadway for rendering with the jqtpl express view engine.",
    "keywords": [
