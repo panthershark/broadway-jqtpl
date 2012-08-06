@@ -11,15 +11,10 @@ util.inherits(Jqtpl, events.EventEmitter);
 Jqtpl.prototype.attach = function (options) {
 	var config = options.config;
 	
-	this.render = function (res, viewName, model, headers) {
+	this.render = function (res, viewName, data, headers) {
 		var html = '',
 			layouthtml = null,
 			layoutViewName = null,
-	    	data = {
-	        	model: model,
-	        	utils: config.utils,
-	        	config: config
-	        },
 	        // add express specific compatibility overrides - partial and layout
 	    	expressExtensions = {
 	    		partial: function(viewName, localdata) { 
