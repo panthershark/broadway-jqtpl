@@ -18,7 +18,11 @@ Jqtpl.prototype.attach = function (options) {
 	        // add express specific compatibility overrides - partial and layout
 	    	expressExtensions = {
 	    		partial: function(viewName, localdata) { 
-	    			return renderHtml(viewName, localdata || data, expressExtensions, config); 
+	    			var d = localdata || data;
+	    			if (localdata) {
+	    				d = _.extend(_.clone(data), localdata);
+	    			}
+	    			return renderHtml(viewName, d, expressExtensions, config); 
 	    		},
 	    		layout: function(viewName) { 
 	    			layoutViewName = viewName; 
@@ -70,7 +74,6 @@ var renderHtml = function(viewName, data, expressExtensions, config){
 
 	if (!view.path) {
 		var html = 'jqtpl plugin: Cannot find view - ' + viewName;
-		throw new Error(html);
 	}
 	else {
 
