@@ -33,9 +33,7 @@ Jqtpl.prototype.attach = function (options) {
 	    try {
 	    	html = renderHtml(viewName, data, expressExtensions, config);
 	    } 
-	    catch (e) {
-	    	throw e;
-	    }
+	    catch (e) {}
 
 	    try {
 	    	// if layout was found during initial render, then it was assigned to the layout property.  We need to process the layout now.
@@ -45,12 +43,11 @@ Jqtpl.prototype.attach = function (options) {
 		    }
 	    }
 	    catch (e) {
-	    	layouthtml = "Error in layout template: " + e.stack + '<p>' + html + '</p>';
-	    	throw e;
+	    	layouthtml = "Error in layout template: " + e.stack + '\n' + html;
 	    }
 
 		// write the response
-		res.writeHead(200, _.extend({ 'Content-Type': 'text/html' }, headers) );
+		res.writeHead(200, _.extend({ 'Content-Type': 'text/plain' }, headers) );
         res.write(layouthtml || html);
         res.end();
 	};
