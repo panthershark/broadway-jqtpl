@@ -12,7 +12,8 @@ Jqtpl.prototype.attach = function (options) {
 	var config = options.config;
 	
 	this.render = function (res, viewName, data, headers) {
-		var html = '',
+		var err = null,
+			html = '',
 			layouthtml = null,
 			layoutViewName = null,
 	        // add express specific compatibility overrides - partial and layout
@@ -33,7 +34,9 @@ Jqtpl.prototype.attach = function (options) {
 	    try {
 	    	html = renderHtml(viewName, data, expressExtensions, config);
 	    } 
-	    catch (e) {}
+	    catch (e) {
+	    	err = e;
+	    }
 
 	    try {
 	    	// if layout was found during initial render, then it was assigned to the layout property.  We need to process the layout now.
@@ -43,13 +46,21 @@ Jqtpl.prototype.attach = function (options) {
 		    }
 	    }
 	    catch (e) {
-	    	layouthtml = "Error in layout template: " + e.stack + '\n' + html;
+	    	e.message += "Error in layout template";
+	    	err = e;
 	    }
 
 		// write the response
-		res.writeHead(200, _.extend({ 'Content-Type': 'text/plain' }, headers) );
-        res.write(layouthtml || html);
-        res.end();
+		if (err) {
+			res.writeHead(500, _.extend({ 'Content-Type': 'text/plain' }, headers) );
+	        res.write(err.message + '\n' + err.stack);
+	        res.end();
+		}
+		else {
+			res.writeHead(200, _.extend({ 'Content-Type': 'text/html' }, headers) );
+	        res.write(layouthtml || html);
+	        res.end();
+	    }
 	};
 
 };
